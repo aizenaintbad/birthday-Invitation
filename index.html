@@ -1,0 +1,639 @@
+<!DOCTYPE html> 
+<html lang="en"> 
+<head> 
+<meta charset="UTF-8"> 
+<meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+<title>Baby Boss Invitation - VIP Edition</title> 
+ 
+<style> 
+*{ 
+  margin:0; 
+  padding:0; 
+  box-sizing:border-box; 
+  font-family: 'Poppins', sans-serif; 
+} 
+ 
+body{ 
+  min-height:100vh; 
+  display:flex; 
+  justify-content:center; 
+  align-items:center; 
+  background: linear-gradient(135deg,#87CEFA,#e6f3ff); 
+  overflow-x:hidden;
+  padding: 20px;
+} 
+ 
+/* Envelope Wrapper */
+.wrapper {
+  perspective: 1500px;
+}
+
+/* Envelope */ 
+.envelope{ 
+  position:relative; 
+  width:450px; 
+  height:300px; 
+  background:#1e3c72; 
+  border-radius:0 0 15px 15px; 
+  cursor:pointer; 
+  box-shadow:0 20px 50px rgba(0,0,0,0.4); 
+  transition: transform 0.3s;
+} 
+
+.envelope:hover {
+  transform: translateY(-5px);
+}
+ 
+/* Flap */
+.envelope::before{ 
+  content:""; 
+  position:absolute; 
+  top:0; 
+  left:0; 
+  width:0; 
+  height:0; 
+  border-top:160px solid #2a5298; 
+  border-left:225px solid transparent; 
+  border-right:225px solid transparent; 
+  transform-origin:top; 
+  transition: 0.8s cubic-bezier(0.4, 0, 0.2, 1); 
+  z-index: 4;
+} 
+ 
+.envelope.open::before{ 
+  transform:rotateX(180deg); 
+  z-index: 0;
+} 
+
+/* Pocket */
+.envelope::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  border-top: 150px solid transparent;
+  border-left: 225px solid #2a5298;
+  border-right: 225px solid #2a5298;
+  border-bottom: 150px solid #1e3c72;
+  z-index: 2;
+  border-radius: 0 0 15px 15px;
+}
+
+/* Gold Seal */
+.seal {
+  position: absolute;
+  top: 140px;
+  left: 205px;
+  width: 50px;
+  height: 50px;
+  background: radial-gradient(circle at 30% 30%, #fff9c4, #ffd700, #fbc02d);
+  border-radius: 50%;
+  z-index: 5;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 900;
+  font-size: 24px;
+  color: #5d4037;
+  border: 3px double #5d4037;
+  transition: 0.6s ease-in-out;
+  animation: seal-pulse 2s infinite;
+}
+
+@keyframes seal-pulse {
+  0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 215, 0, 0.6); }
+  70% { transform: scale(1.05); box-shadow: 0 0 0 15px rgba(255, 215, 0, 0); }
+  100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 215, 0, 0); }
+}
+
+.envelope.open .seal {
+  opacity: 0;
+  transform: translateY(-150px) rotateX(180deg);
+}
+ 
+/* Card */ 
+.card{ 
+  position:absolute; 
+  width:400px; 
+  height:600px; 
+  background:white; 
+  background-image: 
+    linear-gradient(90deg, transparent 95%, rgba(30, 60, 114, 0.05) 95%),
+    linear-gradient(rgba(30, 60, 114, 0.03) 1px, transparent 1px);
+  background-size: 15px 100%, 100% 30px;
+  border: 5px solid gold;
+  border-radius:20px; 
+  top:10px; 
+  left:25px; 
+  padding:30px; 
+  text-align:center; 
+  transform:translateY(0); 
+  transition: transform 1s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.5s; 
+  opacity:0; 
+  overflow:hidden; 
+  z-index: 1;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+} 
+ 
+.envelope.open .card{ 
+  transform:translateY(-350px); 
+  opacity:1; 
+  z-index: 3;
+} 
+
+/* Suit Elements */
+.suit-decoration {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 150px;
+  pointer-events: none;
+}
+
+.lapel {
+  position: absolute;
+  top: 0;
+  width: 50%;
+  height: 120px;
+  background: #1e3c72;
+  z-index: 2;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+.lapel-l {
+  left: 0;
+  clip-path: polygon(0 0, 100% 0, 80% 100%, 0 60%);
+}
+
+.lapel-r {
+  right: 0;
+  clip-path: polygon(0 0, 100% 0, 100% 60%, 20% 100%);
+}
+
+.boss-badge {
+  position: absolute;
+  top: 40px;
+  right: 15px;
+  background: #ffd700;
+  color: #000;
+  padding: 2px 10px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 900;
+  transform: rotate(15deg);
+  box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+  z-index: 10;
+  border: 1px solid #b8860b;
+}
+
+.peek-character {
+  position: fixed;
+  bottom: -20px;
+  right: 10px;
+  width: 150px;
+  z-index: 2000;
+  pointer-events: none;
+  filter: drop-shadow(2px 4px 8px rgba(0,0,0,0.4));
+  animation: peek-anim 4s ease-in-out infinite alternate;
+}
+
+@keyframes peek-anim {
+  from { transform: translateY(20px) rotate(-5deg); }
+  to { transform: translateY(0) rotate(5deg); }
+}
+
+.tie {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40px;
+  height: 150px;
+  background: #000;
+  z-index: 1;
+  clip-path: polygon(0 0, 100% 0, 100% 85%, 50% 100%, 0 85%);
+}
+
+.tie-knot {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 44px;
+  height: 30px;
+  background: #111;
+  z-index: 3;
+  border-bottom: 2px solid rgba(255,255,255,0.1);
+}
+
+.pocket-square {
+  position: absolute;
+  top: 80px;
+  right: 40px;
+  width: 40px;
+  height: 20px;
+  background: white;
+  z-index: 3;
+  clip-path: polygon(0 100%, 30% 0, 60% 80%, 100% 0, 100% 100%);
+  opacity: 0.9;
+}
+
+.gold-button {
+  position: absolute;
+  width: 15px;
+  height: 15px;
+  background: gold;
+  border-radius: 50%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 1px solid #b8860b;
+  box-shadow: inset 0 0 5px rgba(0,0,0,0.5);
+  z-index: 4;
+}
+.btn-1 { top: 180px; }
+.btn-2 { top: 210px; }
+
+/* Stickers */
+.sticker {
+  position: absolute;
+  font-size: 40px;
+  opacity: 0.1;
+  z-index: 0;
+  pointer-events: none;
+}
+.s1 { top: 250px; left: 20px; transform: rotate(-20deg); }
+.s2 { top: 350px; right: 20px; transform: rotate(15deg); }
+.s3 { bottom: 80px; left: 30px; transform: rotate(10deg); }
+.s4 { top: 100px; left: 30px; transform: rotate(-10deg); font-size: 50px; }
+
+/* Header */ 
+.title{ 
+  font-size:28px; 
+  font-weight:900; 
+  color:#1e3c72; 
+  margin-top: 120px;
+  margin-bottom:5px; 
+  text-transform: uppercase;
+  letter-spacing: 2px;
+} 
+ 
+.subtitle{ 
+  font-size:14px; 
+  margin-bottom:20px; 
+  font-weight: 600;
+  color: #555;
+} 
+ 
+/* Baby Photo */ 
+.photo-container {
+  position: relative;
+  display: inline-block;
+  margin: 10px 0;
+  cursor: pointer;
+}
+
+.photo{ 
+  width:160px; 
+  height:160px; 
+  border-radius:50%; 
+  overflow:hidden; 
+  margin:0 auto; 
+  border:8px solid #1e3c72; 
+  background: #f8f9fa;
+  transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+} 
+
+.photo:hover {
+  border-color: #ffd700;
+  transform: scale(1.1) rotate(5deg);
+}
+
+.photo-hint {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  background: #1e3c72;
+  color: white;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 18px;
+  border: 3px solid white;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+  z-index: 10;
+}
+ 
+.photo img{ 
+  width:100%; 
+  height:100%; 
+  object-fit:cover; 
+} 
+ 
+/* Details */ 
+.details{ 
+  font-size:16px; 
+  margin-top:20px; 
+  line-height:1.8; 
+  color: #333;
+} 
+
+.details b {
+  color: #1e3c72;
+}
+ 
+/* Button */ 
+.confirm-btn { 
+  margin-top:25px; 
+  padding:15px 35px; 
+  border:none; 
+  border-radius:40px; 
+  background:#1e3c72; 
+  color:white; 
+  font-weight: bold;
+  font-size: 16px;
+  cursor:pointer; 
+  transition:0.3s; 
+  box-shadow: 0 5px 15px rgba(30, 60, 114, 0.3);
+} 
+ 
+.confirm-btn:hover{ 
+  background:#2a5298; 
+  transform:scale(1.05) translateY(-2px); 
+  box-shadow: 0 8px 20px rgba(30, 60, 114, 0.4);
+} 
+ 
+/* Floating Clouds */ 
+.cloud{ 
+  position:absolute; 
+  background:white; 
+  border-radius:50%; 
+  opacity:0.6; 
+  animation: float 25s linear infinite; 
+} 
+ 
+.cloud1{ width:120px; height:60px; top:10%; left:-150px; } 
+.cloud2{ width:150px; height:80px; top:75%; left:-200px; animation-duration:30s; } 
+.cloud3{ width:100px; height:50px; top:40%; right:-150px; animation: float-reverse 22s linear infinite; }
+
+@keyframes float{ 
+  from{transform:translateX(0);} 
+  to{transform:translateX(130vw);} 
+} 
+@keyframes float-reverse{ 
+  from{transform:translateX(0);} 
+  to{transform:translateX(-130vw);} 
+} 
+ 
+/* Responsive */ 
+@media(max-width:500px){ 
+  .envelope { width: 340px; height: 230px; }
+  .envelope::before { border-top-width: 115px; border-left-width: 170px; border-right-width: 170px; }
+  .envelope::after { border-left-width: 170px; border-right-width: 170px; border-bottom-width: 115px; }
+  .seal { left: 145px; top: 100px; width: 45px; height: 45px; font-size: 20px; }
+  .card { width: 300px; height: 520px; left: 20px; padding: 20px; }
+  .envelope.open .card { transform: translateY(-300px); }
+  .title { font-size: 20px; margin-top: 100px; }
+  .subtitle { font-size: 12px; }
+  .photo { width: 120px; height: 120px; }
+  .photo-hint { width: 30px; height: 30px; font-size: 14px; bottom: 5px; right: 5px; }
+  .details { font-size: 14px; margin-top: 15px; }
+  .confirm-btn { padding: 12px 25px; font-size: 14px; }
+  .btn-1 { top: 160px; }
+  .btn-2 { top: 185px; }
+  .sticker { font-size: 30px; }
+}
+
+@media(max-width:360px){
+  .envelope { width: 270px; height: 180px; }
+  .envelope::before { border-top-width: 90px; border-left-width: 135px; border-right-width: 135px; }
+  .envelope::after { border-left-width: 135px; border-right-width: 135px; border-bottom-width: 90px; }
+  .seal { left: 115px; top: 75px; width: 40px; height: 40px; font-size: 18px; }
+  .card { width: 240px; height: 450px; left: 15px; }
+  .envelope.open .card { transform: translateY(-160px); }
+  .title { font-size: 18px; margin-top: 80px; }
+  .photo { width: 100px; height: 100px; }
+  .details { font-size: 13px; line-height: 1.6; }
+}
+
+/* Floating Balloons */
+.balloon {
+  position: absolute;
+  bottom: -100px;
+  width: 40px;
+  height: 50px;
+  border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
+  z-index: -1;
+  animation: rise var(--duration) linear infinite;
+  box-shadow: inset -5px -5px 10px rgba(0,0,0,0.1);
+}
+.balloon::after {
+  content: "";
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  width: 1px;
+  height: 30px;
+  background: rgba(0,0,0,0.2);
+}
+@keyframes rise {
+  0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(-110vh) rotate(20deg); opacity: 0; }
+}
+
+/* Music Control Toggle */
+.music-toggle {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  width: 45px;
+  height: 45px;
+  background: #1e3c72;
+  color: gold;
+  border: 2px solid gold;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  z-index: 1000;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  font-size: 20px;
+  transition: 0.3s;
+}
+.music-toggle:hover {
+  transform: scale(1.1);
+}
+</style> 
+</head> 
+ 
+<body onload="initParty()"> 
+
+<img src="https://cdn-icons-png.flaticon.com/512/939/939255.png" class="peek-character" alt="Baby Boss">
+
+<div class="music-toggle" onclick="toggleMusic(event)">🎵</div>
+<audio id="bgMusic" loop>
+  <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+</audio>
+ 
+<div class="cloud cloud1"></div> 
+<div class="cloud cloud2"></div> 
+<div class="cloud cloud3"></div>
+ 
+<div class="wrapper">
+  <div class="envelope" onclick="openEnvelope(event)"> 
+    <div class="seal">B</div>
+    <div class="card" onclick="event.stopPropagation()"> 
+      <div class="suit-decoration">
+        <div class="lapel lapel-l"></div>
+        <div class="lapel lapel-r">
+          <div class="boss-badge">BOSS</div>
+        </div>
+        <div class="tie-knot"></div>
+        <div class="tie"></div>
+        <div class="pocket-square"></div>
+        <div class="gold-button btn-1"></div>
+        <div class="gold-button btn-2"></div>
+      </div>
+
+      <div class="sticker s1">💼</div>
+      <div class="sticker s2">🕶️</div>
+      <div class="sticker s3">🍼</div>
+      <div class="sticker s4">💰</div>
+
+      <!-- Baby Boss Decorative Image -->
+      <img src="https://cdn-icons-png.flaticon.com/512/265/265674.png" alt="Sunglasses" style="width: 50px; position: absolute; top: 15px; left: 15px; z-index: 10; filter: drop-shadow(2px 2px 5px rgba(0,0,0,0.3)); transform: rotate(-15deg);">
+
+      <div class="title">A Big Boss Celebration</div> 
+      <div class="subtitle">You're Invited to My 1st Birthday!</div> 
+   
+      <div class="photo-container" onclick="document.getElementById('photoInput').click()">
+        <div class="photo"> 
+          <img id="babyPhoto" src="C:\Users\Lebron Espera\Downloads\kinn.jpg" alt="Baby Photo"> 
+        </div> 
+        <div class="photo-hint">📷</div>
+        <input type="file" id="photoInput" style="display:none" accept="image/*" onchange="changePhoto(event)">
+      </div>
+   
+      <h2 style="color:#1e3c72; font-weight: 900; margin: 10px 0; letter-spacing: 1px;">Kinn Marvy Ito Pastorfide</h2> 
+   
+      <div class="details"> 
+        📅 <b>February 23, 2026</b> <br> 
+        ⏰ <b>12:00 PM</b> <br> 
+        📍 <b>Otirasor Beach Resort</b> <br> 
+        🎈 <i>our Little Baby Boss Is Turning One!</i> 
+      </div> 
+   
+      <button class="confirm-btn" onclick="confetti(event)">Confirm Attendance</button> 
+    </div> 
+  </div> 
+</div>
+ 
+<script> 
+function initParty() {
+  spawnBalloons();
+}
+
+function spawnBalloons() {
+  const colors = ['#1e3c72', '#ffd700', '#ffffff', '#000000', '#FF6B6B', '#4ECDC4'];
+  for(let i=0; i<20; i++) {
+    const b = document.createElement('div');
+    b.className = 'balloon';
+    b.style.left = Math.random() * 100 + 'vw';
+    b.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+    b.style.setProperty('--duration', (Math.random() * 8 + 12) + 's');
+    // Negative delay starts animation midway
+    b.style.animationDelay = (Math.random() * 20 - 20) + 's';
+    document.body.appendChild(b);
+  }
+}
+
+function toggleMusic(event) {
+  if (event) event.stopPropagation();
+  const m = document.getElementById('bgMusic');
+  const btn = document.querySelector('.music-toggle');
+  if (m.paused) {
+    m.play().catch(e => console.log("Audio play blocked"));
+    btn.innerText = '⏸️';
+  } else {
+    m.pause();
+    btn.innerText = '🎵';
+  }
+}
+
+function openEnvelope(event){ 
+  if (event.target.closest('.envelope') && !event.target.closest('.card')) {
+    const env = document.querySelector(".envelope");
+    env.classList.toggle("open"); 
+    
+    // Auto-play music on first interaction if possible
+    const m = document.getElementById('bgMusic');
+    if (env.classList.contains('open') && m.paused) {
+      toggleMusic();
+    }
+  }
+} 
+
+function changePhoto(event) {
+  const file = event.target.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      document.getElementById('babyPhoto').src = e.target.result;
+    }
+    reader.readAsDataURL(file);
+  }
+}
+ 
+/* Boss Theme Confetti Effect */ 
+function confetti(event){ 
+  event.stopPropagation();
+  const colors = ['#1e3c72', '#2a5298', '#ffd700', '#ffffff', '#000000'];
+  const symbols = ['👔', '🍼', '💰', '💼', '⭐', '🕶️', '💎'];
+  
+  for(let i=0;i<80;i++){ 
+    let conf = document.createElement("div"); 
+    conf.style.position="absolute"; 
+    conf.style.zIndex = "100";
+    
+    if (Math.random() > 0.4) {
+      conf.innerText = symbols[Math.floor(Math.random() * symbols.length)];
+      conf.style.fontSize = Math.random() * 15 + 15 + "px";
+    } else {
+      conf.style.width= Math.random() * 8 + 6 + "px"; 
+      conf.style.height= Math.random() * 8 + 6 + "px"; 
+      conf.style.backgroundColor= colors[Math.floor(Math.random() * colors.length)];
+      if (Math.random() > 0.5) conf.style.borderRadius="50%"; 
+    }
+    
+    conf.style.top="50%"; 
+    conf.style.left="50%"; 
+    conf.style.pointerEvents="none"; 
+    document.body.appendChild(conf); 
+ 
+    let x = (Math.random()-0.5)*window.innerWidth * 1.2; 
+    let y = (Math.random()-0.5)*window.innerHeight * 1.2; 
+    let rot = Math.random() * 1080;
+
+    conf.animate([ 
+      {transform:"translate(-50%,-50%) scale(0) rotate(0deg)", opacity:1}, 
+      {transform:`translate(${x}px,${y}px) scale(${Math.random() + 1}) rotate(${rot}deg)`, opacity:0} 
+    ],{ 
+      duration: Math.random() * 1000 + 1500, 
+      easing:"cubic-bezier(0, .9, .57, 1)" 
+    }); 
+ 
+    setTimeout(()=>conf.remove(), 2500); 
+  } 
+} 
+</script> 
+ 
+</body> 
+</html>
